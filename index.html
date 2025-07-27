@@ -105,9 +105,39 @@
       0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.5; }
       50% { transform: translateX(-50%) scale(1.2); opacity: 0.7; }
     }
+
+    /* 实时时钟样式 */
+    .clock-container {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .clock {
+      font-size: 3rem;
+      letter-spacing: 3px;
+      color: #fff;
+      text-shadow: 0 0 10px #00f5d4;
+      background: rgba(0, 255, 204, 0.1);
+      padding: 15px 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+    }
+
+    .date-display {
+      font-size: 1.2rem;
+      margin-top: 8px;
+      color: #00f5d4;
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
+
+<!-- 添加实时时钟 -->
+<div class="clock-container">
+  <div class="clock" id="clock">00:00:00</div>
+  <div class="date-display" id="date-display">Monday, January 1, 2023</div>
+</div>
 
 <div class="controls">
   <div class="arrow" id="prev">⬅</div>
@@ -124,6 +154,8 @@
   const monthLabel = document.getElementById('month-label');
   const prevBtn = document.getElementById('prev');
   const nextBtn = document.getElementById('next');
+  const clockElement = document.getElementById('clock');
+  const dateDisplayElement = document.getElementById('date-display');
 
   const today = new Date();
   let current = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -132,6 +164,29 @@
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
+
+  const dayNames = [
+    'Sunday', 'Monday', 'Tuesday', 'Wednesday',
+    'Thursday', 'Friday', 'Saturday'
+  ];
+
+  // 更新实时时钟
+  function updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+
+    const dateStr = `${dayNames[now.getDay()]}, ${monthNames[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+    dateDisplayElement.textContent = dateStr;
+  }
+
+  // 每秒更新一次时钟
+  setInterval(updateClock, 1000);
+  // 初始化时钟显示
+  updateClock();
 
   function renderCalendar(date) {
     // 清空内容（保留背景）
