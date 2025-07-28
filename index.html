@@ -1,81 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <title>🌌 赛博动物日历 · GSAP</title>
+  <title>🥷 忍者时历 · Ninja Calendar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Orbitron', sans-serif;
-      background: radial-gradient(ellipse at center, #101018 0%, #080818 100%);
+      background: linear-gradient(135deg, #0c0c2b 0%, #000033 100%);
       color: #00f5d4;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px;
+      padding: 20px;
       overflow-x: hidden;
       min-height: 100vh;
+      position: relative;
+    }
+
+    /* 背景忍者元素 */
+    .ninja-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .ninja-symbol {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.1;
+      animation: float 20s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+      }
     }
 
     .header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       position: relative;
+      width: 100%;
     }
 
     .title {
-      font-size: 3rem;
-      letter-spacing: 4px;
+      font-size: 2.5rem;
+      letter-spacing: 3px;
       color: #fff;
-      text-shadow: 0 0 15px #00f5d4, 0 0 30px #00b3ff;
+      text-shadow: 0 0 10px #00b3ff, 0 0 20px #00b3ff, 0 0 30px #00b3ff;
       margin-bottom: 10px;
       position: relative;
-      animation: titleGlow 3s infinite alternate;
+      font-family: 'Press Start 2P', cursive;
+      animation: titleGlow 2s infinite alternate;
+      cursor: pointer;
     }
 
     @keyframes titleGlow {
-      0% { text-shadow: 0 0 15px #00f5d4, 0 0 30px #00b3ff; }
-      100% { text-shadow: 0 0 25px #00f5d4, 0 0 50px #00b3ff, 0 0 70px #00b3ff; }
+      0% {
+        text-shadow: 0 0 10px #00b3ff, 0 0 20px #00b3ff, 0 0 30px #00b3ff;
+      }
+      100% {
+        text-shadow: 0 0 15px #00b3ff, 0 0 30px #00b3ff, 0 0 45px #00b3ff, 0 0 60px #00b3ff;
+      }
     }
 
-    /* 实时时钟样式 */
+    /* 忍者时钟样式 */
     .clock-container {
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       text-align: center;
       position: relative;
+      width: 100%;
+      max-width: 800px;
+      cursor: pointer;
     }
 
     .clock {
-      font-size: 4rem;
+      font-size: 3.5rem;
       letter-spacing: 5px;
       color: #fff;
-      text-shadow: 0 0 15px #ff00ff, 0 0 30px #ff00ff;
-      background: rgba(255, 0, 255, 0.1);
+      text-shadow: 0 0 10px #00b3ff, 0 0 20px #00b3ff;
+      background: rgba(0, 0, 30, 0.7);
       padding: 20px 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 40px rgba(255, 0, 255, 0.3);
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 179, 255, 0.5);
       position: relative;
       overflow: hidden;
-      border: 2px solid rgba(255, 0, 255, 0.5);
+      border: 2px solid rgba(0, 179, 255, 0.7);
+      font-family: 'Press Start 2P', cursive;
     }
 
     .clock::before {
       content: "";
       position: absolute;
-      top: -10px;
-      left: -10px;
-      right: -10px;
-      bottom: -10px;
-      background: linear-gradient(45deg, #ff00ff, #00ffff, #00ff00, #ffff00, #ff00ff);
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      background: linear-gradient(45deg, #00b3ff, #000033, #00b3ff, #000033);
       background-size: 400%;
       z-index: -1;
-      border-radius: 30px;
-      animation: gradientBorder 3s linear infinite;
-      filter: blur(20px);
-      opacity: 0.7;
+      border-radius: 20px;
+      animation: gradientBorder 2s linear infinite;
+      filter: blur(10px);
+      opacity: 0.8;
     }
 
     @keyframes gradientBorder {
@@ -84,51 +128,59 @@
     }
 
     .date-display {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       margin-top: 15px;
-      color: #00f5d4;
-      text-shadow: 0 0 10px #00f5d4;
+      color: #00b3ff;
+      text-shadow: 0 0 8px #00b3ff;
       letter-spacing: 2px;
     }
 
-    .animal-icon {
+    .shuriken {
       position: absolute;
-      font-size: 2rem;
+      font-size: 1.5rem;
       z-index: 10;
       pointer-events: none;
+      opacity: 0;
     }
 
     .controls {
       display: flex;
       align-items: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       position: relative;
+      width: 100%;
+      max-width: 800px;
+      justify-content: center;
     }
 
     .arrow {
-      font-size: 2.5rem;
-      margin: 0 30px;
+      font-size: 2rem;
+      margin: 0 20px;
       cursor: pointer;
-      color: #00f5d4;
+      color: #00b3ff;
       transition: all 0.3s ease;
-      text-shadow: 0 0 10px #00f5d4;
+      text-shadow: 0 0 8px #00b3ff;
       position: relative;
       z-index: 2;
+      font-weight: bold;
     }
 
     .arrow:hover {
-      transform: scale(1.5) rotate(20deg);
-      color: #ff00ff;
-      text-shadow: 0 0 20px #ff00ff;
+      transform: scale(1.5) rotate(180deg);
+      color: #ffffff;
+      text-shadow: 0 0 15px #ffffff;
     }
 
     .month-label {
-      font-size: 2.5rem;
-      letter-spacing: 3px;
+      font-size: 2rem;
+      letter-spacing: 2px;
       color: #fff;
-      text-shadow: 0 0 15px #00b3ff;
+      text-shadow: 0 0 10px #00b3ff;
       position: relative;
-      padding: 10px 30px;
+      padding: 8px 20px;
+      font-family: 'Press Start 2P', cursive;
+      background: rgba(0, 0, 30, 0.5);
+      border-radius: 10px;
     }
 
     .month-label::after {
@@ -138,8 +190,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(0, 179, 255, 0.2), transparent);
-      animation: shine 3s infinite;
+      background: linear-gradient(90deg, transparent, rgba(0, 179, 255, 0.3), transparent);
+      animation: shine 2s infinite;
+      border-radius: 10px;
     }
 
     @keyframes shine {
@@ -150,16 +203,16 @@
     .calendar {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 15px;
-      max-width: 1000px;
+      gap: 10px;
+      max-width: 800px;
       width: 100%;
-      padding: 30px;
-      background: rgba(0, 255, 204, 0.05);
-      border-radius: 25px;
-      box-shadow: 0 0 60px rgba(0, 255, 204, 0.25);
-      backdrop-filter: blur(6px);
+      padding: 20px;
+      background: rgba(0, 0, 30, 0.7);
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(0, 179, 255, 0.5);
+      backdrop-filter: blur(5px);
       position: relative;
-      border: 1px solid rgba(0, 255, 255, 0.3);
+      border: 1px solid rgba(0, 179, 255, 0.5);
       overflow: hidden;
     }
 
@@ -170,8 +223,8 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
-      animation: rotate 20s linear infinite;
+      background: radial-gradient(circle, rgba(0, 179, 255, 0.2) 0%, transparent 70%);
+      animation: rotate 15s linear infinite;
       z-index: -1;
     }
 
@@ -186,28 +239,32 @@
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      font-size: 1.3rem;
-      color: #ff00ff;
-      text-shadow: 0 0 10px #ff00ff;
+      font-size: 1.1rem;
+      color: #00b3ff;
+      text-shadow: 0 0 8px #00b3ff;
       position: relative;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.9rem;
     }
 
     .day {
       aspect-ratio: 1 / 1;
-      background: rgba(0, 255, 255, 0.07);
-      border: 1px solid rgba(0, 255, 255, 0.2);
+      background: rgba(30, 30, 60, 0.8);
+      border: 1px solid rgba(0, 179, 255, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      font-size: 1.6rem;
-      border-radius: 16px;
+      font-size: 1.3rem;
+      border-radius: 12px;
       cursor: pointer;
-      color: #00f5d4;
-      text-shadow: 0 0 5px #00ffe0;
+      color: #66d9ff;
+      text-shadow: 0 0 5px #00b3ff;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.1rem;
     }
 
     .day::before {
@@ -217,7 +274,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+      background: linear-gradient(45deg, transparent, rgba(0, 179, 255, 0.2), transparent);
       transform: translateX(-100%);
       transition: transform 0.5s ease;
     }
@@ -227,28 +284,29 @@
     }
 
     .day:hover {
-      background: #00f5d4;
+      background: #00b3ff;
       color: #000;
       transform: scale(1.15);
-      box-shadow: 0 0 25px #00f5d4;
+      box-shadow: 0 0 20px #00b3ff;
       z-index: 2;
     }
 
     .today {
-      background: #ff00ff;
-      color: #fff;
-      box-shadow: 0 0 30px #ff00ff, inset 0 0 15px #ff00ff;
+      background: #000033;
+      color: #00b3ff;
+      box-shadow: 0 0 25px #00b3ff, inset 0 0 10px #00b3ff;
       transform: scale(1.1);
       position: relative;
       overflow: hidden;
+      border: 2px solid #00b3ff;
     }
 
     .today::after {
-      content: "🐱";
+      content: "🥷";
       position: absolute;
       top: -5px;
       right: -5px;
-      font-size: 1.2rem;
+      font-size: 1rem;
       transform: rotate(20deg);
     }
 
@@ -257,126 +315,172 @@
     }
 
     .special-day::after {
-      content: attr(data-animal);
+      content: attr(data-ninja);
       position: absolute;
       top: -8px;
       right: -8px;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       transform: rotate(15deg);
     }
 
-    .bg-glow {
+    .hidden-ninja {
       position: absolute;
-      width: 1000px;
-      height: 1000px;
-      top: -500px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: radial-gradient(circle, rgba(0,255,255,0.2), transparent 70%);
+      font-size: 1.5rem;
+      opacity: 0;
       pointer-events: none;
-      animation: pulse 5s ease-in-out infinite;
-      z-index: -1;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.4; }
-      50% { transform: translateX(-50%) scale(1.3); opacity: 0.8; }
+    .footer {
+      margin-top: 25px;
+      text-align: center;
+      color: #00b3ff;
+      font-size: 1rem;
+      text-shadow: 0 0 8px #00b3ff;
+      letter-spacing: 1px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.8rem;
+      cursor: pointer;
     }
 
-    .particles {
+    /* 彩蛋样式 */
+    .konami-code {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 5rem;
+      color: #00b3ff;
+      text-shadow: 0 0 20px #00b3ff;
+      opacity: 0;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .ninja-trace {
+      position: fixed;
+      font-size: 1.5rem;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .ninja-skill {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      color: #00b3ff;
+      text-shadow: 0 0 20px #00b3ff;
+      opacity: 0;
+      z-index: 100;
+      pointer-events: none;
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    .ninja-game-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
-      z-index: -1;
+      background: rgba(0,0,51,0.8);
+      z-index: 1000;
+      font-family: 'Press Start 2P', cursive;
+      color: #00f5d4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: #00f5d4;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #00f5d4, 0 0 20px #00f5d4;
-      animation: float 15s infinite linear;
+    .ninja-game-overlay button {
+      background: #00b3ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-family: inherit;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      border-radius: 5px;
     }
 
-    @keyframes float {
-      to {
-        transform: translateY(-100px) rotate(360deg);
+    @media (max-width: 768px) {
+      .title {
+        font-size: 1.5rem;
       }
-    }
 
-    .footer {
-      margin-top: 30px;
-      text-align: center;
-      color: #00b3ff;
-      font-size: 1.1rem;
-      text-shadow: 0 0 10px #00b3ff;
-      letter-spacing: 1px;
+      .clock {
+        font-size: 2rem;
+      }
+
+      .date-display {
+        font-size: 1rem;
+      }
+
+      .month-label {
+        font-size: 1.2rem;
+      }
+
+      .day-name, .day {
+        font-size: 0.7rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- 背景粒子 -->
-  <div class="particles" id="particles"></div>
+  <!-- 背景忍者符号 -->
+  <div class="ninja-background" id="ninja-background"></div>
 
   <div class="header">
-    <h1 class="title">🌌 赛博动物日历 🐱</h1>
+    <h1 class="title" id="title">🥷 忍者时历 · NINJA CALENDAR</h1>
   </div>
 
-  <!-- 添加实时时钟 -->
+  <!-- 忍者时钟 -->
   <div class="clock-container">
     <div class="clock" id="clock">00:00:00</div>
     <div class="date-display" id="date-display">Monday, January 1, 2023</div>
   </div>
 
   <div class="controls">
-    <div class="arrow" id="prev">⬅</div>
+    <div class="arrow" id="prev">◀</div>
     <div class="month-label" id="month-label"></div>
-    <div class="arrow" id="next">➡</div>
+    <div class="arrow" id="next">▶</div>
   </div>
 
   <div class="calendar" id="calendar">
-    <div class="bg-glow"></div>
+    <!-- 日历内容将通过JS生成 -->
   </div>
 
   <div class="footer">
-    <p>🐾 与可爱的动物一起探索时间的奥秘 🐾</p>
+    <p id="footer-text">🌊 隐藏于深海之中，行动于波涛之间 🌊</p>
   </div>
 
   <script>
-    // 创建背景粒子
-    function createParticles() {
-      const particlesContainer = document.getElementById('particles');
-      const particleCount = 100;
+    // 创建背景忍者符号
+    function createNinjaBackground() {
+      const ninjaBackground = document.getElementById('ninja-background');
+      const ninjaSymbols = ['⚔️', '🗡️', '🥷', '🏯', '🎏', '🧨', '🌊', '🌙', '⭐', '⚡'];
+      const symbolCount = 30;
 
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
+      for (let i = 0; i < symbolCount; i++) {
+        const symbol = document.createElement('div');
+        symbol.classList.add('ninja-symbol');
+        symbol.textContent = ninjaSymbols[Math.floor(Math.random() * ninjaSymbols.length)];
 
         // 随机位置
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.top = `${Math.random() * 100}%`;
+        symbol.style.left = `${Math.random() * 100}%`;
+        symbol.style.top = `${Math.random() * 100}%`;
 
         // 随机大小
-        const size = Math.random() * 3 + 1;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
+        const size = Math.random() * 2 + 1;
+        symbol.style.fontSize = `${size}rem`;
 
         // 随机动画延迟和持续时间
-        particle.style.animationDelay = `${Math.random() * 15}s`;
-        particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+        symbol.style.animationDelay = `${Math.random() * 20}s`;
+        symbol.style.animationDuration = `${Math.random() * 10 + 15}s`;
 
-        // 随机颜色
-        const colors = ['#00f5d4', '#00b3ff', '#ff00ff', '#ffff00'];
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.background = color;
-        particle.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
-
-        particlesContainer.appendChild(particle);
+        ninjaBackground.appendChild(symbol);
       }
     }
 
@@ -386,24 +490,43 @@
     const nextBtn = document.getElementById('next');
     const clockElement = document.getElementById('clock');
     const dateDisplayElement = document.getElementById('date-display');
+    const titleElement = document.getElementById('title');
+    const footerElement = document.getElementById('footer-text');
 
     const today = new Date();
     let current = new Date(today.getFullYear(), today.getMonth(), 1);
 
     const monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      '睦月', '如月', '弥生', '卯月', '皐月', '水無月',
+      '文月', '葉月', '長月', '神無月', '霜月', '師走'
     ];
 
     const dayNames = [
-      'Sunday', 'Monday', 'Tuesday', 'Wednesday',
-      'Thursday', 'Friday', 'Saturday'
+      '日', '月', '火', '水', '木', '金', '土'
     ];
 
-    // 动物表情符号映射
-    const animalEmojis = ['🐱', '🐶', '🦊', '🐼', '🐰', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔'];
+    // 忍者元素映射
+    const ninjaElements = ['⚔️', '🌊', '手里剑', '水', '影', '遁', '術', '忍', '者', '潮'];
 
-    // 更新实时时钟
+    // Konami彩蛋代码
+    let konamiIndex = 0;
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+
+    // 忍术技能系统
+    const ninjaSkills = [
+      { name: "水分身", code: ['KeyS', 'KeyU', 'KeyI', 'KeyB', 'KeyU', 'KeyN'], symbol: '👥' },
+      { name: "水遁术", code: ['KeyS', 'KeyU', 'KeyI', 'KeyT', 'KeyO', 'KeyN'], symbol: '🌊' },
+      { name: "手里剑雨", code: ['KeyT', 'KeyH', 'KeyR', 'KeyO', 'KeyW'], symbol: '手里剑' },
+      { name: "海啸术", code: ['KeyT', 'KeyS', 'KeyU', 'KeyN'], symbol: '🌀' }
+    ];
+
+    let skillIndex = 0;
+    let currentSkill = null;
+
+    // 忍者小游戏相关变量
+    let gameMode = false;
+
+    // 更新忍者时钟
     function updateClock() {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
@@ -412,7 +535,7 @@
 
       clockElement.textContent = `${hours}:${minutes}:${seconds}`;
 
-      const dateStr = `${dayNames[now.getDay()]}, ${monthNames[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+      const dateStr = `${monthNames[now.getMonth()]} ${now.getDate()}日, ${now.getFullYear()}年`;
       dateDisplayElement.textContent = dateStr;
     }
 
@@ -422,8 +545,8 @@
     updateClock();
 
     function renderCalendar(date) {
-      // 清空内容（保留背景）
-      [...calendar.querySelectorAll(".day, .day-name")].forEach(el => el.remove());
+      // 清空内容
+      calendar.innerHTML = '';
 
       const year = date.getFullYear();
       const month = date.getMonth();
@@ -436,7 +559,7 @@
       dayNames.forEach(dayName => {
         const dayNameEl = document.createElement('div');
         dayNameEl.classList.add('day-name');
-        dayNameEl.textContent = dayName.charAt(0);
+        dayNameEl.textContent = dayName;
         calendar.appendChild(dayNameEl);
       });
 
@@ -454,11 +577,11 @@
         cell.classList.add('day');
         cell.textContent = day;
 
-        // 特殊日期添加动物图标
+        // 特殊日期添加忍者元素
         if (day % 5 === 0) {
           cell.classList.add('special-day');
-          const animalIndex = (day + month) % animalEmojis.length;
-          cell.setAttribute('data-animal', animalEmojis[animalIndex]);
+          const ninjaIndex = (day + month) % ninjaElements.length;
+          cell.setAttribute('data-ninja', ninjaElements[ninjaIndex]);
         }
 
         // 是否是今天？
@@ -470,24 +593,25 @@
           cell.classList.add('today');
         }
 
-        cell.addEventListener('click', () => {
-          // 创建临时动物图标
-          const animalIcon = document.createElement('div');
-          animalIcon.classList.add('animal-icon');
-          animalIcon.textContent = animalEmojis[Math.floor(Math.random() * animalEmojis.length)];
-          animalIcon.style.left = `${event.clientX}px`;
-          animalIcon.style.top = `${event.clientY}px`;
-          document.body.appendChild(animalIcon);
+        cell.addEventListener('click', (e) => {
+          // 创建临时忍者武器
+          const shuriken = document.createElement('div');
+          shuriken.classList.add('shuriken');
+          shuriken.textContent = ['手里剑', '⚔️', '🌊'][Math.floor(Math.random() * 3)];
+          shuriken.style.left = `${e.clientX}px`;
+          shuriken.style.top = `${e.clientY}px`;
+          document.body.appendChild(shuriken);
 
           // 动画效果
-          gsap.to(animalIcon, {
-            y: -100,
-            opacity: 0,
+          gsap.to(shuriken, {
+            x: (Math.random() - 0.5) * 200,
+            y: -150 - Math.random() * 100,
+            opacity: 1,
             rotation: 360,
             duration: 1.5,
             ease: "power1.out",
             onComplete: () => {
-              animalIcon.remove();
+              shuriken.remove();
             }
           });
 
@@ -508,12 +632,12 @@
       gsap.fromTo(".day", {
         y: 50,
         opacity: 0,
-        rotateX: 90,
+        rotateY: 90,
         scale: 0.5
       }, {
         y: 0,
         opacity: 1,
-        rotateX: 0,
+        rotateY: 0,
         scale: 1,
         stagger: {
           amount: 0.8,
@@ -537,8 +661,241 @@
       renderCalendar(current);
     }
 
-    // 初始化粒子效果
-    createParticles();
+    // Konami彩蛋
+    document.addEventListener('keydown', (e) => {
+      // 忍术技能彩蛋
+      if (currentSkill && e.code === currentSkill.code[skillIndex]) {
+        skillIndex++;
+        if (skillIndex === currentSkill.code.length) {
+          activateNinjaSkill(currentSkill);
+          skillIndex = 0;
+          currentSkill = null;
+        }
+      } else {
+        // 检查是否开始输入某个技能
+        ninjaSkills.forEach(skill => {
+          if (e.code === skill.code[0]) {
+            currentSkill = skill;
+            skillIndex = 1;
+          }
+        });
+
+        // Konami Code 彩蛋
+        if (e.code === konamiCode[konamiIndex]) {
+          konamiIndex++;
+          if (konamiIndex === konamiCode.length) {
+            activateKonamiEgg();
+            konamiIndex = 0;
+          }
+        } else {
+          konamiIndex = 0;
+        }
+      }
+    });
+
+    function activateKonamiEgg() {
+      // 创建彩蛋元素
+      const konamiEgg = document.createElement('div');
+      konamiEgg.classList.add('konami-code');
+      konamiEgg.textContent = '水忍!';
+      document.body.appendChild(konamiEgg);
+
+      // 动画效果
+      gsap.to(konamiEgg, {
+        opacity: 1,
+        scale: 1.5,
+        duration: 1,
+        yoyo: true,
+        repeat: 3,
+        onComplete: () => {
+          gsap.to(konamiEgg, {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => {
+              konamiEgg.remove();
+            }
+          });
+        }
+      });
+
+      // 在页面中添加隐藏忍者
+      for (let i = 0; i < 20; i++) {
+        const hiddenNinja = document.createElement('div');
+        hiddenNinja.classList.add('hidden-ninja');
+        hiddenNinja.textContent = '🥷';
+        hiddenNinja.style.left = `${Math.random() * 100}%`;
+        hiddenNinja.style.top = `${Math.random() * 100}%`;
+        document.body.appendChild(hiddenNinja);
+
+        gsap.to(hiddenNinja, {
+          opacity: 1,
+          duration: 0.5,
+          yoyo: true,
+          repeat: 3,
+          onComplete: () => {
+            hiddenNinja.remove();
+          }
+        });
+      }
+    }
+
+    function activateNinjaSkill(skill) {
+      const skillElement = document.createElement('div');
+      skillElement.classList.add('ninja-skill');
+      skillElement.textContent = `${skill.symbol} ${skill.name}!`;
+      document.body.appendChild(skillElement);
+
+      gsap.to(skillElement, {
+        opacity: 1,
+        scale: 2,
+        duration: 1,
+        yoyo: true,
+        repeat: 2,
+        onComplete: () => {
+          gsap.to(skillElement, {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => skillElement.remove()
+          });
+        }
+      });
+
+      // 根据技能类型添加特殊效果
+      if (skill.name === "手里剑雨") {
+        for (let i = 0; i < 30; i++) {
+          setTimeout(() => {
+            const shuriken = document.createElement('div');
+            shuriken.classList.add('shuriken');
+            shuriken.textContent = '手里剑';
+            shuriken.style.left = `${Math.random() * 100}%`;
+            shuriken.style.top = `-20px`;
+            document.body.appendChild(shuriken);
+
+            gsap.to(shuriken, {
+              y: window.innerHeight + 100,
+              x: (Math.random() - 0.5) * 200,
+              rotation: 360 * 3,
+              duration: 2 + Math.random() * 2,
+              onComplete: () => shuriken.remove()
+            });
+          }, i * 100);
+        }
+      } else if (skill.name === "海啸术") {
+        for (let i = 0; i < 50; i++) {
+          setTimeout(() => {
+            const wave = document.createElement('div');
+            wave.classList.add('shuriken');
+            wave.textContent = '🌊';
+            wave.style.left = `${Math.random() * 100}%`;
+            wave.style.top = `-20px`;
+            document.body.appendChild(wave);
+
+            gsap.to(wave, {
+              y: window.innerHeight + 100,
+              x: (Math.random() - 0.5) * 300,
+              rotation: 360 * 5,
+              duration: 3 + Math.random() * 3,
+              onComplete: () => wave.remove()
+            });
+          }, i * 150);
+        }
+      }
+    }
+
+    // 添加鼠标移动时的忍者痕迹效果
+    document.addEventListener('mousemove', (e) => {
+      if (Math.random() > 0.7) { // 30%概率出现
+        const trace = document.createElement('div');
+        trace.classList.add('ninja-trace');
+        trace.textContent = ['.', '・', '･'][Math.floor(Math.random() * 3)];
+        trace.style.left = `${e.clientX}px`;
+        trace.style.top = `${e.clientY}px`;
+        trace.style.color = ['#00b3ff', '#00f5d4', '#fff'][Math.floor(Math.random() * 3)];
+        document.body.appendChild(trace);
+
+        gsap.to(trace, {
+          opacity: 0,
+          scale: 0,
+          duration: 1,
+          onComplete: () => trace.remove()
+        });
+      }
+    });
+
+    // 标题双击彩蛋
+    titleElement.addEventListener('dblclick', () => {
+      const secretMessage = document.createElement('div');
+      secretMessage.classList.add('konami-code');
+      secretMessage.textContent = '水忍大师!';
+      secretMessage.style.fontSize = '3rem';
+      document.body.appendChild(secretMessage);
+
+      gsap.to(secretMessage, {
+        opacity: 1,
+        scale: 1.5,
+        duration: 1,
+        yoyo: true,
+        repeat: 2,
+        onComplete: () => {
+          gsap.to(secretMessage, {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => secretMessage.remove()
+          });
+        }
+      });
+    });
+
+    // 时钟点击彩蛋
+    let clockClickCount = 0;
+    clockElement.addEventListener('click', () => {
+      clockClickCount++;
+      if (clockClickCount >= 5) {
+        clockClickCount = 0;
+        const timeWarp = document.createElement('div');
+        timeWarp.classList.add('konami-code');
+        timeWarp.textContent = '水时术!';
+        timeWarp.style.fontSize = '3rem';
+        document.body.appendChild(timeWarp);
+
+        gsap.to(timeWarp, {
+          opacity: 1,
+          scale: 1.5,
+          duration: 1,
+          yoyo: true,
+          repeat: 2,
+          onComplete: () => {
+            gsap.to(timeWarp, {
+              opacity: 0,
+              duration: 1,
+              onComplete: () => timeWarp.remove()
+            });
+          }
+        });
+
+        // 改变时钟颜色
+        clockElement.style.color = ['#00f5d4', '#fff', '#00b3ff'][Math.floor(Math.random() * 3)];
+      }
+    });
+
+    // 页脚点击彩蛋
+    footerElement.addEventListener('click', () => {
+      // 切换页脚文字
+      const messages = [
+        "🌊 隐藏于深海之中，行动于波涛之间 🌊",
+        "💧 水无形，忍无迹 💧",
+        "🌙 月下水忍帖 🌙",
+        "⚔️ 水忍道在于心 ⚔️"
+      ];
+
+      const currentText = footerElement.textContent;
+      let nextIndex = messages.indexOf(currentText) + 1;
+      if (nextIndex >= messages.length) nextIndex = 0;
+      footerElement.textContent = messages[nextIndex];
+    });
+
+    // 初始化忍者背景效果
+    createNinjaBackground();
   </script>
 </body>
 </html>
